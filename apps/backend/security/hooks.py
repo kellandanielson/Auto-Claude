@@ -78,6 +78,11 @@ async def bash_security_hook(
         profile = SecurityProfile()
         profile.base_commands = BASE_COMMANDS.copy()
 
+    # Check for wildcard bypass - allows all commands when "*" is in custom_commands
+    # This is the equivalent of "bypass permissions" mode for specific projects
+    if "*" in profile.custom_commands:
+        return {}  # Bypass all validation
+
     # Extract all commands from the command string
     commands = extract_commands(command)
 
